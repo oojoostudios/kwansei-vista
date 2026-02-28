@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kwansei Vista — Garden Wedding in the Mountains</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Noto+Serif+KR:wght@300;400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ivory:       #faf6f0;
+    --ivory-warm:  #f5ede0;
+    --ivory-mid:   #ede3d5;
+    --parchment:   #e8d9c4;
+
+    /* Dancheong pastels */
+    --rose:        #e8b4b0;
+    --rose-deep:   #d4817a;
+    --rose-pale:   #f5ddd9;
+    --sage:        #9bb89a;
+    --sage-deep:   #6f9870;
+    --sage-pale:   #daeada;
+    --sky:         #9bbfcc;
+    --sky-pale:    #daedf5;
+    --gold:        #c4a06a;
+    --gold-pale:   #e8d9b8;
+    --mauve:       #c8a8b8;
+    --mauve-pale:  #eedde8;
+
+    --ink:         #3a3228;
+    --ink-mid:     #6b5f54;
+    --ink-light:   #9e9088;
+
+    --serif:  'Cormorant Garamond', Georgia, serif;
+    --kr:     'Noto Serif KR', serif;
+    --sans:   'Jost', sans-serif;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ivory);
+    color: var(--ink);
+    font-family: var(--kr);
+    overflow-x: hidden;
+  }
+
+  .cursor {
+    position: fixed; width:7px; height:7px;
+    background: var(--rose-deep); border-radius:50%;
+    pointer-events:none; z-index:9999;
+    transform: translate(-50%,-50%);
+    mix-blend-mode: multiply;
+  }
+  .cursor-ring {
+    position:fixed; width:28px; height:28px;
+    border:1px solid rgba(196,160,106,0.5); border-radius:50%;
+    pointer-events:none; z-index:9998;
+    transform: translate(-50%,-50%);
+    transition: left .18s cubic-bezier(.23,1,.32,1), top .18s cubic-bezier(.23,1,.32,1);
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    padding: 28px 64px;
+    display: flex; justify-content:space-between; align-items:center;
+    transition: all .4s ease;
+  }
+  nav.scrolled {
+    background: rgba(250,246,240,0.94);
+    backdrop-filter: blur(20px);
+    padding: 18px 64px;
+    box-shadow: 0 1px 0 rgba(196,160,106,0.15), 0 4px 20px rgba(58,50,40,0.04);
+  }
+  .nav-logo { text-decoration:none; }
+  .nav-logo-main { font-family: var(--serif); font-size:1.25rem; font-weight:400; letter-spacing:.12em; color: var(--ink); display:block; }
+  .nav-logo-sub { font-family: var(--kr); font-size:.6rem; letter-spacing:.2em; color: var(--ink-light); display:block; margin-top:2px; }
+  .nav-links { display:flex; gap:36px; list-style:none; }
+  .nav-links a {
+    font-family: var(--sans); font-size:.72rem; font-weight:400; letter-spacing:.18em; text-transform:uppercase;
+    color: var(--ink-mid); text-decoration:none; transition: color .25s; position:relative;
+  }
+  .nav-links a::after { content:''; position:absolute; bottom:-3px; left:0; right:100%; height:1px; background:var(--rose-deep); transition: right .3s ease; }
+  .nav-links a:hover { color: var(--rose-deep); }
+  .nav-links a:hover::after { right:0; }
+  .nav-cta {
+    font-family: var(--sans); font-size:.68rem; font-weight:500; letter-spacing:.2em; text-transform:uppercase;
+    color: var(--ivory); background: var(--rose-deep); padding: 11px 28px; text-decoration:none; border-radius:2px;
+    transition: background .3s, transform .2s, box-shadow .3s;
+  }
+  .nav-cta:hover { background: var(--rose); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(212,129,122,.35); }
+
+  /* HERO */
+  .hero {
+    min-height:100vh; position:relative;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    overflow:hidden; padding: 120px 40px 80px;
+  }
+  .hero-bg {
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 120% 80% at 50% 0%, #f5e8e0 0%, transparent 55%),
+      radial-gradient(ellipse 80% 60% at 20% 80%, rgba(154,184,154,0.18) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 50% at 80% 70%, rgba(155,191,204,0.15) 0%, transparent 50%),
+      #faf6f0;
+  }
+  .petals { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+  .petal {
+    position:absolute; width:8px; height:10px;
+    background: var(--rose-pale); border-radius:50% 0 50% 0;
+    opacity:0; animation: fallPetal linear infinite;
+  }
+  @keyframes fallPetal {
+    0%   { opacity:0; transform: translateY(-20px) rotate(0deg); }
+    10%  { opacity:.6; }
+    90%  { opacity:.3; }
+    100% { opacity:0; transform: translateY(100vh) rotate(360deg) translateX(60px); }
+  }
+  .hero-mountains { position:absolute; bottom:0; left:0; right:0; pointer-events:none; }
+  .hero-content { position:relative; z-index:5; text-align:center; max-width:880px; }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:10px;
+    font-family: var(--sans); font-size:.62rem; letter-spacing:.3em; text-transform:uppercase;
+    color: var(--rose-deep); margin-bottom:36px;
+    opacity:0; animation: riseIn .8s .6s forwards;
+  }
+  .hero-badge::before, .hero-badge::after { content:''; width:24px; height:1px; background:var(--rose); }
+  .hero-kr {
+    font-family: var(--kr); font-size:1.1rem; font-weight:300;
+    color: var(--ink-mid); letter-spacing:.25em; margin-bottom:18px;
+    opacity:0; animation: riseIn .8s .8s forwards;
+  }
+  .hero-title {
+    font-family: var(--serif); font-size: clamp(4rem, 11vw, 9.5rem); font-weight:300;
+    line-height:.92; letter-spacing:-.02em; color: var(--ink); margin-bottom:16px;
+    opacity:0; animation: riseIn 1s .9s forwards;
+  }
+  .hero-title em { font-style:italic; color: var(--rose-deep); }
+  .hero-tagline {
+    font-family: var(--serif); font-size: clamp(1.1rem,2.5vw,1.7rem);
+    font-weight:300; font-style:italic; color: var(--ink-light); margin-bottom:48px;
+    opacity:0; animation: riseIn .8s 1.1s forwards;
+  }
+  .hero-divider { display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:48px; opacity:0; animation: fadeIn .8s 1.3s forwards; }
+  .hdiv-line { width:60px; height:1px; background:linear-gradient(90deg,transparent,var(--rose)); }
+  .hdiv-line:last-child { background:linear-gradient(90deg,var(--rose),transparent); }
+  .hdiv-flower { font-size:.7rem; color:var(--rose-deep); opacity:.7; }
+  .hero-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; opacity:0; animation: riseIn .8s 1.5s forwards; }
+  .btn-filled {
+    font-family:var(--sans); font-size:.68rem; font-weight:500; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--ivory); background:var(--rose-deep); padding:14px 36px; text-decoration:none; border-radius:2px;
+    transition: background .3s, transform .2s, box-shadow .3s; cursor:none;
+  }
+  .btn-filled:hover { background:var(--rose); transform:translateY(-2px); box-shadow:0 8px 24px rgba(212,129,122,.3); }
+  .btn-outline {
+    font-family:var(--sans); font-size:.68rem; font-weight:400; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--ink-mid); background:transparent; padding:13px 36px; text-decoration:none; border-radius:2px;
+    border:1px solid var(--parchment); transition: border-color .3s, color .3s, transform .2s; cursor:none;
+  }
+  .btn-outline:hover { border-color:var(--rose-deep); color:var(--rose-deep); transform:translateY(-2px); }
+  .hero-scroll-hint {
+    position:absolute; bottom:36px; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    opacity:0; animation: fadeIn 1s 2s forwards; cursor:none;
+  }
+  .hero-scroll-hint span { font-family:var(--sans); font-size:.55rem; letter-spacing:.3em; text-transform:uppercase; color:var(--ink-light); }
+  .scroll-stem { width:1px; height:40px; background:linear-gradient(180deg,var(--rose-deep),transparent); animation: stemPulse 2s ease-in-out infinite; }
+
+  /* LAYOUT */
+  .si { max-width:1200px; margin:0 auto; padding:0 64px; }
+  .tag { font-family:var(--sans); font-size:.6rem; font-weight:400; letter-spacing:.3em; text-transform:uppercase; color:var(--rose-deep); display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+  .tag::before { content:''; width:22px; height:1px; background:var(--rose); }
+  .h2 { font-family:var(--serif); font-size:clamp(2.2rem,5vw,4.2rem); font-weight:300; line-height:1.05; color:var(--ink); margin-bottom:24px; }
+  .h2 em { font-style:italic; color:var(--rose-deep); }
+
+  /* SEASONS */
+  .seasons { background:var(--ivory-warm); padding:60px 0; border-top:1px solid var(--ivory-mid); border-bottom:1px solid var(--ivory-mid); }
+  .seasons-inner { display:grid; grid-template-columns:repeat(4,1fr); }
+  .season-item { padding:40px; border-right:1px solid var(--ivory-mid); text-align:center; transition: background .3s; }
+  .season-item:last-child { border-right:none; }
+  .season-item:hover { background:rgba(232,180,176,.07); }
+  .season-emoji { font-size:2rem; display:block; margin-bottom:12px; }
+  .season-name { font-family:var(--serif); font-size:1.4rem; font-weight:300; color:var(--ink); margin-bottom:4px; }
+  .season-kr { font-family:var(--kr); font-size:.75rem; color:var(--ink-light); letter-spacing:.1em; margin-bottom:10px; }
+  .season-desc { font-family:var(--sans); font-size:.7rem; letter-spacing:.03em; color:var(--ink-light); line-height:1.7; }
+
+  /* ABOUT */
+  .about { padding:130px 0; background:var(--ivory); }
+  .about-grid { display:grid; grid-template-columns:1.1fr 1fr; gap:90px; align-items:center; }
+  .about-img-wrap { position:relative; }
+  .about-bg-block { position:absolute; top:24px; left:24px; right:-24px; bottom:-24px; background:var(--sage-pale); border-radius:2px; z-index:0; }
+  .about-bg-block2 { position:absolute; top:12px; left:12px; right:-12px; bottom:-12px; background:var(--rose-pale); border-radius:2px; z-index:0; opacity:.6; }
+  .about-img { position:relative; z-index:1; background:var(--ivory-warm); border:1px solid var(--parchment); border-radius:2px; overflow:hidden; aspect-ratio:4/5; }
+  .about-img svg { width:100%; height:100%; display:block; }
+  .about-floater { position:absolute; bottom:-36px; right:-20px; z-index:2; background:var(--ivory); border:1px solid var(--rose-pale); padding:20px 28px; box-shadow:0 4px 24px rgba(58,50,40,.06); }
+  .about-floater-num { font-family:var(--serif); font-size:2.8rem; font-weight:300; color:var(--rose-deep); line-height:1; }
+  .about-floater-lbl { font-family:var(--sans); font-size:.58rem; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-light); margin-top:4px; }
+  .about-text p { font-size:1.02rem; line-height:1.95; color:var(--ink-mid); font-weight:300; margin-bottom:18px; }
+  .about-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:32px; }
+  .chip { font-family:var(--sans); font-size:.6rem; letter-spacing:.15em; text-transform:uppercase; padding:7px 16px; border:1px solid var(--parchment); color:var(--ink-mid); border-radius:100px; transition: background .25s, border-color .25s, color .25s; }
+  .chip:hover { background:var(--rose-pale); border-color:var(--rose); color:var(--rose-deep); }
+  .chip.sage:hover { background:var(--sage-pale); border-color:var(--sage); color:var(--sage-deep); }
+  .chip.sky:hover { background:var(--sky-pale); border-color:var(--sky); color:#4a7f8a; }
+
+  /* CEREMONIES */
+  .ceremonies { padding:130px 0; background:var(--ivory); }
+  .ceremonies-header { text-align:center; margin-bottom:70px; }
+  .ceremonies-header p { font-size:1.02rem; color:var(--ink-light); max-width:540px; margin:0 auto; line-height:1.85; }
+  .ceremony-tabs { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  .ctab {
+    background:var(--ivory-warm); border:1px solid var(--ivory-mid); border-radius:3px;
+    padding:52px 44px; position:relative; overflow:hidden; cursor:none;
+    transition: transform .4s cubic-bezier(.23,1,.32,1), box-shadow .4s, border-color .4s;
+  }
+  .ctab:hover { transform: translateY(-6px); box-shadow:0 20px 60px rgba(58,50,40,.08); border-color:var(--parchment); }
+  .ctab-accent { position:absolute; top:0; left:0; right:0; height:3px; }
+  .ctab:nth-child(1) .ctab-accent { background:linear-gradient(90deg,var(--rose-pale),var(--rose)); }
+  .ctab:nth-child(2) .ctab-accent { background:linear-gradient(90deg,var(--sky-pale),var(--sky)); }
+  .ctab:nth-child(3) .ctab-accent { background:linear-gradient(90deg,var(--sage-pale),var(--sage)); }
+  .ctab-icon { width:52px; height:52px; margin-bottom:28px; }
+  .ctab-num { font-family:var(--serif); font-size:5rem; font-weight:300; line-height:1; color:rgba(58,50,40,.04); position:absolute; top:24px; right:32px; }
+  .ctab-type { font-family:var(--sans); font-size:.6rem; letter-spacing:.3em; text-transform:uppercase; margin-bottom:12px; }
+  .ctab:nth-child(1) .ctab-type { color:var(--rose-deep); }
+  .ctab:nth-child(2) .ctab-type { color:#4a7f8a; }
+  .ctab:nth-child(3) .ctab-type { color:var(--sage-deep); }
+  .ctab-title { font-family:var(--serif); font-size:2.2rem; font-weight:300; line-height:1.1; color:var(--ink); margin-bottom:6px; }
+  .ctab-kr { font-family:var(--kr); font-size:.82rem; color:var(--ink-light); margin-bottom:22px; letter-spacing:.1em; }
+  .ctab-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+  .ctab-tag { font-family:var(--sans); font-size:.55rem; letter-spacing:.15em; text-transform:uppercase; padding:4px 10px; border-radius:100px; color:var(--ink-light); border:1px solid var(--ivory-mid); }
+  .ctab-body { font-size:.9rem; line-height:1.85; color:var(--ink-mid); margin-bottom:28px; opacity:0; transition: opacity .3s; }
+  .ctab:hover .ctab-body { opacity:1; }
+  .ctab-link { font-family:var(--sans); font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--rose-deep); text-decoration:none; display:inline-flex; align-items:center; gap:8px; opacity:0; transition: opacity .3s .05s, gap .2s; }
+  .ctab:hover .ctab-link { opacity:1; }
+  .ctab-link:hover { gap:14px; }
+  .ctab-link::after { content:'→'; }
+
+  /* INTL */
+  .intl { padding:100px 0; background: linear-gradient(135deg, var(--rose-pale) 0%, var(--sky-pale) 50%, var(--sage-pale) 100%); position:relative; overflow:hidden; }
+  .intl::before { content:'사랑'; position:absolute; right:-40px; top:50%; transform:translateY(-50%) rotate(-10deg); font-family:var(--kr); font-size:28vw; color:rgba(212,129,122,0.07); pointer-events:none; white-space:nowrap; }
+  .intl-inner { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+  .intl-text p { font-size:1rem; color:var(--ink-mid); line-height:1.9; margin-bottom:20px; }
+  .intl-flags-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .intl-flag { background:rgba(250,246,240,.7); border:1px solid rgba(255,255,255,.8); backdrop-filter:blur(8px); border-radius:4px; padding:16px 20px; display:flex; align-items:center; gap:12px; transition: transform .2s, box-shadow .2s; }
+  .intl-flag:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(58,50,40,.06); }
+  .intl-flag-emoji { font-size:1.3rem; }
+  .intl-flag-text { font-family:var(--sans); font-size:.7rem; color:var(--ink-mid); letter-spacing:.05em; }
+
+  /* PACKAGES */
+  .packages { padding:130px 0; background:var(--ivory-warm); }
+  .packages-header { text-align:center; margin-bottom:70px; }
+  .pkg-grid { display:grid; grid-template-columns:repeat(3,1fr); border:1px solid var(--ivory-mid); border-radius:4px; overflow:hidden; box-shadow:0 4px 40px rgba(58,50,40,.06); }
+  .pkg { background:var(--ivory); padding:56px 44px; border-right:1px solid var(--ivory-mid); position:relative; transition: background .3s; }
+  .pkg:last-child { border-right:none; }
+  .pkg.feat { background:var(--ivory-warm); }
+  .pkg:hover { background:rgba(232,180,176,.05); }
+  .pkg.feat:hover { background:rgba(232,180,176,.1); }
+  .pkg-ribbon { position:absolute; top:0; right:40px; transform:translateY(-1px); background:var(--rose-deep); color:var(--ivory); font-family:var(--sans); font-size:.55rem; letter-spacing:.2em; text-transform:uppercase; padding:7px 16px; border-radius:0 0 3px 3px; }
+  .pkg-tier { font-family:var(--sans); font-size:.58rem; letter-spacing:.3em; text-transform:uppercase; color:var(--rose-deep); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .pkg-tier::after { content:''; flex:1; height:1px; background:var(--parchment); }
+  .pkg-name { font-family:var(--serif); font-size:2.4rem; font-weight:300; color:var(--ink); margin-bottom:4px; }
+  .pkg-kr { font-family:var(--kr); font-size:.82rem; color:var(--ink-light); margin-bottom:24px; letter-spacing:.1em; }
+  .pkg-price { font-family:var(--serif); font-size:1rem; font-weight:300; color:var(--rose-deep); margin-bottom:32px; }
+  .pkg-price small { display:block; font-family:var(--sans); font-size:.62rem; color:var(--ink-light); letter-spacing:.1em; margin-top:4px; }
+  .pkg-list { list-style:none; margin-bottom:36px; }
+  .pkg-list li { font-size:.88rem; color:var(--ink-mid); padding:9px 0; border-bottom:1px solid var(--ivory-mid); display:flex; align-items:flex-start; gap:10px; line-height:1.5; }
+  .pkg-list li::before { content:'✦'; font-size:.5rem; color:var(--rose); margin-top:6px; flex-shrink:0; }
+  .pkg-list li.hl { color:var(--ink); }
+  .pkg-list li.hl::before { color:var(--rose-deep); }
+  .pkg-btn-wrap a { display:block; text-align:center; font-family:var(--sans); font-size:.65rem; font-weight:500; letter-spacing:.2em; text-transform:uppercase; padding:13px; text-decoration:none; border-radius:2px; cursor:none; transition: all .3s; }
+  .pkg-btn-ghost { border:1px solid var(--parchment); color:var(--rose-deep); }
+  .pkg-btn-ghost:hover { background:var(--rose-pale); border-color:var(--rose); }
+  .pkg-btn-fill { background:var(--rose-deep)!important; color:var(--ivory)!important; border:1px solid var(--rose-deep)!important; }
+  .pkg-btn-fill:hover { background:var(--rose)!important; box-shadow:0 6px 20px rgba(212,129,122,.3); }
+
+  /* GALLERY */
+  .gallery { padding:130px 0; background:var(--ivory); }
+  .gallery-header { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:end; margin-bottom:56px; }
+  .gallery-header p { font-size:1rem; color:var(--ink-light); line-height:1.9; }
+  .gallery-mosaic { display:grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 280px 280px; gap:6px; }
+  .gc { border-radius:3px; overflow:hidden; position:relative; cursor:none; transition: transform .5s cubic-bezier(.23,1,.32,1); }
+  .gc:hover { transform:scale(1.01); z-index:2; }
+  .gc:nth-child(1) { grid-row:span 2; }
+  .gc-inner { width:100%; height:100%; display:flex; align-items:center; justify-content:center; position:relative; }
+  .gc-lbl { position:absolute; bottom:16px; left:16px; font-family:var(--sans); font-size:.55rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(58,50,40,.6); background:rgba(250,246,240,.8); backdrop-filter:blur(4px); padding:4px 10px; border-radius:100px; pointer-events:none; }
+
+  /* TESTIMONIALS */
+  .testi { padding:120px 0; background:var(--ivory-warm); }
+  .testi-header { text-align:center; margin-bottom:60px; }
+  .testi-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  .tcard { background:var(--ivory); border:1px solid var(--ivory-mid); border-radius:3px; padding:44px 40px; position:relative; transition: transform .3s, box-shadow .3s; }
+  .tcard:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(58,50,40,.06); }
+  .tcard-quote { font-family:var(--serif); font-size:4.5rem; font-weight:300; line-height:1; color:var(--rose-pale); position:absolute; top:16px; left:32px; }
+  .tcard-stars { color:var(--rose); font-size:.75rem; letter-spacing:2px; margin-bottom:16px; margin-top:8px; }
+  .tcard-text { font-family:var(--serif); font-style:italic; font-size:1.08rem; font-weight:300; color:var(--ink-mid); line-height:1.85; margin-bottom:28px; margin-top:16px; }
+  .tcard-hr { width:28px; height:1px; background:var(--rose); margin-bottom:14px; }
+  .tcard-author { font-family:var(--sans); font-size:.65rem; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--ink); }
+  .tcard-from { font-family:var(--sans); font-size:.6rem; letter-spacing:.08em; color:var(--ink-light); margin-top:3px; }
+
+  /* LOCATION */
+  .location { padding:130px 0; background:var(--ivory); }
+  .location-grid { display:grid; grid-template-columns:1fr 1.2fr; gap:80px; align-items:start; }
+  .location-text > p { font-size:1rem; color:var(--ink-mid); line-height:1.9; margin-bottom:36px; }
+  .loc-row { display:flex; align-items:flex-start; gap:18px; padding:18px 0; border-bottom:1px solid var(--ivory-mid); }
+  .loc-icon { width:36px; height:36px; border-radius:50%; background:var(--rose-pale); border:1px solid var(--rose); display:flex; align-items:center; justify-content:center; font-size:.85rem; flex-shrink:0; margin-top:2px; }
+  .loc-label { font-family:var(--sans); font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--rose-deep); margin-bottom:4px; }
+  .loc-val { font-size:.9rem; color:var(--ink-mid); line-height:1.6; }
+  .location-map { border:1px solid var(--ivory-mid); border-radius:4px; overflow:hidden; box-shadow:0 4px 30px rgba(58,50,40,.06); }
+  .location-map svg { width:100%; display:block; }
+
+  /* CTA */
+  .cta { padding:160px 0; background:linear-gradient(160deg, var(--rose-pale) 0%, var(--ivory-warm) 40%, var(--sage-pale) 100%); text-align:center; position:relative; overflow:hidden; }
+  .cta::before { content:''; position:absolute; inset:0; background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1' fill='%23e8b4b0' fill-opacity='0.12'/%3E%3C/svg%3E"); pointer-events:none; }
+  .cta-inner { position:relative; z-index:1; }
+  .cta h2 { font-family:var(--serif); font-size:clamp(3rem,8vw,7.5rem); font-weight:300; line-height:.9; color:var(--ink); margin-bottom:28px; }
+  .cta h2 em { font-style:italic; color:var(--rose-deep); }
+  .cta p { font-size:1.05rem; color:var(--ink-mid); max-width:480px; margin:0 auto 48px; line-height:1.9; }
+  .cta-actions { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .cta-contact-row { display:flex; justify-content:center; gap:56px; flex-wrap:wrap; margin-top:60px; padding-top:50px; border-top:1px solid var(--parchment); }
+  .cta-contact-item { text-align:center; }
+  .cta-contact-lbl { font-family:var(--sans); font-size:.58rem; letter-spacing:.25em; text-transform:uppercase; color:var(--ink-light); margin-bottom:6px; }
+  .cta-contact-val { font-family:var(--serif); font-size:1.05rem; font-weight:300; color:var(--rose-deep); }
+
+  /* FOOTER */
+  footer { background:var(--ink); padding:70px 64px 40px; }
+  .footer-grid { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:60px; padding-bottom:50px; border-bottom:1px solid rgba(255,255,255,.06); margin-bottom:32px; }
+  .footer-brand { font-family:var(--serif); font-size:1.3rem; font-weight:300; color:var(--parchment); margin-bottom:8px; }
+  .footer-brand-kr { font-family:var(--kr); font-size:.75rem; color:var(--ink-light); letter-spacing:.15em; margin-bottom:16px; }
+  .footer-about { font-size:.85rem; color:rgba(200,191,176,.45); line-height:1.8; }
+  .footer-col-title { font-family:var(--sans); font-size:.58rem; letter-spacing:.25em; text-transform:uppercase; color:var(--rose); margin-bottom:18px; }
+  .footer-links { list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .footer-links a { font-size:.85rem; color:rgba(200,191,176,.4); text-decoration:none; transition:color .25s; }
+  .footer-links a:hover { color:var(--rose); }
+  .footer-bottom { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+  .footer-copy { font-family:var(--sans); font-size:.58rem; letter-spacing:.12em; color:rgba(200,191,176,.25); }
+  .footer-langs { display:flex; gap:14px; }
+  .footer-lang { font-family:var(--sans); font-size:.58rem; letter-spacing:.12em; color:rgba(200,191,176,.3); text-decoration:none; cursor:none; transition:color .25s; }
+  .footer-lang:hover, .footer-lang.on { color:var(--rose); }
+
+  @keyframes riseIn { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+  @keyframes stemPulse { 0%,100% { opacity:1; } 50% { opacity:.4; } }
+
+  .reveal { opacity:0; transform:translateY(32px); transition:opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1); }
+  .reveal.vis { opacity:1; transform:translateY(0); }
+  .r1 { transition-delay:.1s; } .r2 { transition-delay:.2s; } .r3 { transition-delay:.3s; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cring"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-main">Kwansei Vista</span>
+    <span class="nav-logo-sub">관세이 비스타 · Bukhansan, Seoul</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">The Venue</a></li>
+    <li><a href="#ceremonies">Ceremonies</a></li>
+    <li><a href="#packages">Packages</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Begin Your Journey</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="petals" id="petals"></div>
+
+  <svg class="hero-mountains" viewBox="0 0 1440 300" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="mfog" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="rgba(209,186,168,0)" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#faf6f0" stop-opacity="1"/>
+      </linearGradient>
+    </defs>
+    <path d="M0,300 L0,200 L80,160 L200,190 L320,130 L440,165 L540,105 L640,140 L740,80 L840,120 L940,70 L1040,110 L1140,90 L1260,135 L1360,115 L1440,140 L1440,300 Z" fill="rgba(188,208,195,0.35)"/>
+    <path d="M0,300 L0,235 L140,175 L280,210 L420,155 L560,190 L660,135 L780,170 L880,115 L980,160 L1100,130 L1220,175 L1340,150 L1440,175 L1440,300 Z" fill="rgba(180,200,190,0.45)"/>
+    <path d="M0,300 L0,265 L180,210 L360,240 L540,200 L700,230 L860,195 L1020,225 L1180,200 L1340,230 L1440,215 L1440,300 Z" fill="rgba(155,184,154,0.3)"/>
+    <rect width="1440" height="300" fill="url(#mfog)"/>
+    <g fill="rgba(100,140,100,0.2)">
+      <polygon points="60,265 75,220 90,265"/><polygon points="75,265 92,215 109,265"/>
+      <polygon points="1330,265 1347,218 1364,265"/><polygon points="1350,265 1368,210 1386,265"/>
+      <polygon points="700,265 716,225 732,265"/>
+    </g>
+    <g transform="translate(940,62)" fill="rgba(155,184,154,0.35)">
+      <rect x="-1.5" y="-5" width="3" height="20"/>
+      <rect x="-7" y="15" width="14" height="2.5"/>
+      <rect x="-5" y="17.5" width="10" height="7"/>
+      <rect x="-9" y="24.5" width="18" height="2.5"/>
+      <rect x="-7" y="27" width="14" height="9"/>
+      <rect x="-11" y="36" width="22" height="2.5"/>
+    </g>
+  </svg>
+
+  <!-- Floral arch -->
+  <svg style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(700px,90%);opacity:.55;pointer-events:none;z-index:2;" viewBox="0 0 700 500" xmlns="http://www.w3.org/2000/svg">
+    <path d="M180,500 L180,220 Q180,80 350,60 Q520,80 520,220 L520,500" stroke="rgba(196,160,106,0.25)" stroke-width="1.5" fill="none"/>
+    <g fill="rgba(232,180,176,0.5)">
+      <circle cx="178" cy="180" r="22"/><circle cx="155" cy="205" r="16"/><circle cx="195" cy="165" r="14"/>
+      <circle cx="162" cy="155" r="12"/><circle cx="205" cy="200" r="10"/>
+      <circle cx="350" cy="62" r="22"/><circle cx="310" cy="70" r="16"/><circle cx="390" cy="70" r="16"/>
+      <circle cx="280" cy="82" r="12"/><circle cx="420" cy="82" r="12"/>
+      <circle cx="522" cy="180" r="22"/><circle cx="545" cy="205" r="16"/><circle cx="505" cy="165" r="14"/>
+      <circle cx="538" cy="155" r="12"/><circle cx="495" cy="200" r="10"/>
+    </g>
+    <g fill="rgba(154,184,154,0.45)">
+      <circle cx="185" cy="225" r="8"/><circle cx="148" cy="195" r="7"/><circle cx="210" cy="170" r="7"/>
+      <circle cx="515" cy="225" r="8"/><circle cx="552" cy="195" r="7"/><circle cx="490" cy="170" r="7"/>
+    </g>
+    <path d="M180,280 Q265,310 350,300 Q435,310 520,280" stroke="rgba(154,184,154,0.3)" stroke-width="1" fill="none"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-badge">Bukhansan National Park · Seoul · Korea</div>
+    <p class="hero-kr">산이 증인이 되는 날 · Where Mountains Bear Witness</p>
+    <h1 class="hero-title">Kwansei<br><em>Vista</em></h1>
+    <p class="hero-tagline">A Garden Wedding at the Edge of the Mountain</p>
+    <div class="hero-divider">
+      <div class="hdiv-line"></div>
+      <span class="hdiv-flower">✿</span>
+      <div class="hdiv-line"></div>
+    </div>
+    <div class="hero-btns">
+      <a href="#ceremonies" class="btn-filled">Explore Ceremonies</a>
+      <a href="#contact" class="btn-outline">Plan Your Wedding</a>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <div class="scroll-stem"></div>
+    <span>Scroll to explore</span>
+  </div>
+</section>
+
+<!-- SEASONS -->
+<section class="seasons">
+  <div class="si">
+    <div class="seasons-inner">
+      <div class="season-item reveal"><span class="season-emoji">🌸</span><div class="season-name">Spring</div><div class="season-kr">봄 · Bom</div><div class="season-desc">Cherry blossoms cascade along every pathway. April–May is our most beloved season.</div></div>
+      <div class="season-item reveal r1"><span class="season-emoji">🌿</span><div class="season-name">Summer</div><div class="season-kr">여름 · Yeoreum</div><div class="season-desc">Lush greenery frames the mountains. Cool evening breezes and vibrant garden colors.</div></div>
+      <div class="season-item reveal r2"><span class="season-emoji">🍁</span><div class="season-name">Autumn</div><div class="season-kr">가을 · Ga-eul</div><div class="season-desc">Crimson and gold foliage transforms Bukhansan into a painter's canvas in October–November.</div></div>
+      <div class="season-item reveal r3"><span class="season-emoji">❄️</span><div class="season-name">Winter</div><div class="season-kr">겨울 · Gyeo-ul</div><div class="season-desc">Snow-dusted pines and intimate indoor hanok ceremonies with warm candlelight.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="si">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal">
+        <div class="about-bg-block"></div>
+        <div class="about-bg-block2"></div>
+        <div class="about-img">
+          <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="skyL" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f0ec"/><stop offset="100%" stop-color="#f0e8e0"/></linearGradient>
+              <linearGradient id="roofL" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c8b898"/><stop offset="100%" stop-color="#b0a080"/></linearGradient>
+            </defs>
+            <rect width="400" height="500" fill="url(#skyL)"/>
+            <ellipse cx="80" cy="60" rx="50" ry="18" fill="rgba(255,255,255,0.6)"/>
+            <ellipse cx="120" cy="55" rx="35" ry="14" fill="rgba(255,255,255,0.5)"/>
+            <ellipse cx="300" cy="80" rx="45" ry="16" fill="rgba(255,255,255,0.5)"/>
+            <path d="M0,280 L60,210 L130,245 L200,185 L270,220 L340,175 L400,200 L400,320 L0,320 Z" fill="rgba(154,184,154,0.35)"/>
+            <path d="M0,295 L80,240 L160,270 L240,225 L320,260 L400,240 L400,320 L0,320 Z" fill="rgba(154,184,154,0.5)"/>
+            <rect x="0" y="390" width="400" height="110" fill="rgba(154,184,154,0.2)"/>
+            <rect x="150" y="385" width="100" height="8" fill="rgba(180,168,148,0.6)" rx="1"/>
+            <rect x="140" y="393" width="120" height="8" fill="rgba(180,168,148,0.5)" rx="1"/>
+            <rect x="110" y="300" width="10" height="92" fill="rgba(190,170,140,0.7)" rx="1"/>
+            <rect x="155" y="300" width="10" height="92" fill="rgba(190,170,140,0.7)" rx="1"/>
+            <rect x="235" y="300" width="10" height="92" fill="rgba(190,170,140,0.7)" rx="1"/>
+            <rect x="280" y="300" width="10" height="92" fill="rgba(190,170,140,0.7)" rx="1"/>
+            <rect x="110" y="300" width="180" height="92" fill="rgba(245,240,230,0.5)"/>
+            <rect x="130" y="315" width="40" height="72" fill="rgba(240,232,218,0.8)" stroke="rgba(196,160,106,0.3)" stroke-width="0.5" rx="1"/>
+            <rect x="180" y="313" width="40" height="74" fill="rgba(240,232,218,0.8)" stroke="rgba(196,160,106,0.3)" stroke-width="0.5" rx="1"/>
+            <rect x="230" y="315" width="40" height="72" fill="rgba(240,232,218,0.8)" stroke="rgba(196,160,106,0.3)" stroke-width="0.5" rx="1"/>
+            <g stroke="rgba(196,160,106,0.35)" stroke-width="0.6" fill="none">
+              <line x1="145" y1="315" x2="145" y2="387"/><line x1="155" y1="315" x2="155" y2="387"/>
+              <line x1="130" y1="330" x2="170" y2="330"/><line x1="130" y1="350" x2="170" y2="350"/><line x1="130" y1="370" x2="170" y2="370"/>
+              <line x1="195" y1="313" x2="195" y2="387"/><line x1="205" y1="313" x2="205" y2="387"/>
+              <line x1="180" y1="330" x2="220" y2="330"/><line x1="180" y1="350" x2="220" y2="350"/><line x1="180" y1="370" x2="220" y2="370"/>
+              <line x1="245" y1="315" x2="245" y2="387"/><line x1="255" y1="315" x2="255" y2="387"/>
+              <line x1="230" y1="330" x2="270" y2="330"/><line x1="230" y1="350" x2="270" y2="350"/><line x1="230" y1="370" x2="270" y2="370"/>
+            </g>
+            <rect x="100" y="290" width="200" height="14" fill="rgba(196,160,106,0.4)" rx="1"/>
+            <rect x="95" y="285" width="210" height="8" fill="rgba(196,160,106,0.3)" rx="1"/>
+            <!-- Dancheong color blocks -->
+            <g opacity="0.5">
+              <rect x="100" y="290" width="20" height="14" fill="rgba(232,180,176,0.6)"/>
+              <rect x="120" y="290" width="20" height="14" fill="rgba(154,184,154,0.6)"/>
+              <rect x="140" y="290" width="20" height="14" fill="rgba(155,191,204,0.6)"/>
+              <rect x="160" y="290" width="20" height="14" fill="rgba(232,180,176,0.6)"/>
+              <rect x="180" y="290" width="20" height="14" fill="rgba(154,184,154,0.6)"/>
+              <rect x="200" y="290" width="20" height="14" fill="rgba(155,191,204,0.6)"/>
+              <rect x="220" y="290" width="20" height="14" fill="rgba(200,168,184,0.6)"/>
+              <rect x="240" y="290" width="20" height="14" fill="rgba(232,180,176,0.6)"/>
+              <rect x="260" y="290" width="20" height="14" fill="rgba(154,184,154,0.6)"/>
+              <rect x="280" y="290" width="20" height="14" fill="rgba(155,191,204,0.6)"/>
+            </g>
+            <path d="M50,285 C80,255 160,238 200,230 C240,238 320,255 350,285 L330,290 L200,248 L70,290 Z" fill="url(#roofL)" stroke="rgba(180,160,120,0.4)" stroke-width="0.5"/>
+            <path d="M70,288 Q200,252 330,288" stroke="rgba(255,255,255,0.3)" stroke-width="1" fill="none"/>
+            <path d="M185,228 L200,218 L215,228" fill="rgba(196,160,106,0.6)"/>
+            <rect x="198" y="208" width="4" height="12" fill="rgba(196,160,106,0.5)"/>
+            <circle cx="70" cy="290" r="5" fill="rgba(154,184,154,0.5)"/>
+            <circle cx="330" cy="290" r="5" fill="rgba(154,184,154,0.5)"/>
+            <!-- Lanterns -->
+            <line x1="155" y1="290" x2="155" y2="304" stroke="rgba(196,160,106,0.5)" stroke-width="0.8"/>
+            <ellipse cx="155" cy="309" rx="6" ry="8" fill="rgba(232,180,176,0.4)" stroke="rgba(196,160,106,0.4)" stroke-width="0.5"/>
+            <line x1="200" y1="290" x2="200" y2="301" stroke="rgba(196,160,106,0.5)" stroke-width="0.8"/>
+            <ellipse cx="200" cy="306" rx="6" ry="8" fill="rgba(155,191,204,0.4)" stroke="rgba(155,191,204,0.4)" stroke-width="0.5"/>
+            <line x1="245" y1="290" x2="245" y2="304" stroke="rgba(196,160,106,0.5)" stroke-width="0.8"/>
+            <ellipse cx="245" cy="309" rx="6" ry="8" fill="rgba(154,184,154,0.4)" stroke="rgba(154,184,154,0.4)" stroke-width="0.5"/>
+            <!-- Trees -->
+            <g transform="translate(38,295)">
+              <rect x="-2" y="40" width="4" height="65" fill="rgba(160,130,90,0.5)" rx="1"/>
+              <path d="M-2,55 Q-18,40 -22,25 Q-12,36 -2,50" fill="rgba(140,110,70,0.3)"/>
+              <path d="M2,50 Q18,35 22,20 Q12,33 2,47" fill="rgba(140,110,70,0.3)"/>
+              <g fill="rgba(232,180,176,0.55)">
+                <circle cx="-18" cy="22" r="14"/><circle cx="0" cy="12" r="17"/>
+                <circle cx="18" cy="22" r="14"/><circle cx="-8" cy="38" r="10"/><circle cx="10" cy="36" r="10"/>
+              </g>
+            </g>
+            <g transform="translate(358,305)">
+              <rect x="-2" y="40" width="4" height="55" fill="rgba(160,130,90,0.5)" rx="1"/>
+              <path d="M-2,52 Q-14,38 -18,25 Q-10,34 -2,48" fill="rgba(140,110,70,0.3)"/>
+              <path d="M2,48 Q14,34 18,22 Q10,32 2,46" fill="rgba(140,110,70,0.3)"/>
+              <g fill="rgba(154,184,154,0.55)">
+                <circle cx="-14" cy="22" r="13"/><circle cx="0" cy="13" r="15"/>
+                <circle cx="14" cy="22" r="13"/><circle cx="-6" cy="36" r="9"/><circle cx="8" cy="34" r="9"/>
+              </g>
+            </g>
+            <g fill="rgba(232,180,176,0.5)"><circle cx="60" cy="400" r="6"/><circle cx="80" cy="395" r="5"/><circle cx="320" cy="398" r="6"/><circle cx="340" cy="402" r="5"/></g>
+          </svg>
+        </div>
+        <div class="about-floater">
+          <div class="about-floater-num">北漢山</div>
+          <div class="about-floater-lbl">Bukhansan · Mountain View</div>
+        </div>
+      </div>
+      <div class="about-text">
+        <div class="tag reveal">The Venue</div>
+        <h2 class="h2 reveal r1">A Garden Where<br>Heritage <em>Blooms</em></h2>
+        <p class="reveal r2">Perched at the foothills of Bukhansan National Park — Seoul's beloved mountain sanctuary — Kwansei Vista is an open-air haven where Korean tradition and natural beauty intertwine. Think soft breezes through ancient pine, hanok eaves painted in pastel dancheong colors, and a backdrop no studio could ever replicate.</p>
+        <p class="reveal r2">Whether you're a Korean family celebrating centuries of rite, or an international couple falling in love with a culture that isn't quite yours yet — this place was made for you, too.</p>
+        <div class="about-chips reveal r3">
+          <span class="chip">Outdoor Terraces</span>
+          <span class="chip">Hanok Pavilion</span>
+          <span class="chip sage">Pine Garden</span>
+          <span class="chip">Pyebaek Suite</span>
+          <span class="chip sky">Mountain Views</span>
+          <span class="chip">Bilingual Team</span>
+          <span class="chip sage">Bridal Suite</span>
+          <span class="chip">Photo Garden</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CEREMONIES -->
+<section class="ceremonies" id="ceremonies">
+  <div class="si">
+    <div class="ceremonies-header">
+      <div class="tag reveal" style="justify-content:center">Ceremonies</div>
+      <h2 class="h2 reveal r1">Your Wedding,<br>Your <em>Tradition</em></h2>
+      <p class="reveal r2">Three beautifully curated paths — each honoring a different way of saying "I do," all set against the same breathtaking mountain garden.</p>
+    </div>
+    <div class="ceremony-tabs">
+      <div class="ctab reveal">
+        <div class="ctab-accent"></div>
+        <svg class="ctab-icon" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="26" cy="26" r="22" fill="none" stroke="rgba(212,129,122,0.35)" stroke-width="1.2"/>
+          <circle cx="26" cy="26" r="14" fill="none" stroke="rgba(232,180,176,0.5)" stroke-width="0.8"/>
+          <path d="M26,4 L29,20 L42,14 L31,24 L42,34 L29,28 L26,44 L23,28 L10,34 L21,24 L10,14 L23,20 Z" fill="rgba(212,129,122,0.2)" stroke="rgba(212,129,122,0.5)" stroke-width="0.8"/>
+        </svg>
+        <span class="ctab-num">一</span>
+        <div class="ctab-type">전통 한국식 혼례</div>
+        <h3 class="ctab-title">Traditional<br>Korean</h3>
+        <p class="ctab-kr">전통 혼례 · Jeontong Hollye</p>
+        <div class="ctab-tags"><span class="ctab-tag">Hanbok</span><span class="ctab-tag">Paebaek</span><span class="ctab-tag">Hollye Rites</span><span class="ctab-tag">Ginyeo</span></div>
+        <p class="ctab-body">The full grandeur of Korean matrimonial rites — sacred bows beneath a pine-and-bamboo screen, ritual wine sharing, and vibrant hanbok in rich jeogori and chima. Officiated in Korean and English.</p>
+        <a href="#contact" class="ctab-link">Explore this ceremony</a>
+      </div>
+      <div class="ctab reveal r1">
+        <div class="ctab-accent"></div>
+        <svg class="ctab-icon" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="26" cy="26" rx="20" ry="22" fill="none" stroke="rgba(155,191,204,0.4)" stroke-width="1.2"/>
+          <path d="M26,4 L30,22 L48,22 L34,32 L40,50 L26,39 L12,50 L18,32 L4,22 L22,22 Z" fill="none" stroke="rgba(155,191,204,0.5)" stroke-width="0.8"/>
+          <circle cx="26" cy="26" r="6" fill="rgba(155,191,204,0.2)" stroke="rgba(155,191,204,0.4)" stroke-width="0.5"/>
+        </svg>
+        <span class="ctab-num">二</span>
+        <div class="ctab-type">Western Ceremony</div>
+        <h3 class="ctab-title">Western<br>Garden</h3>
+        <p class="ctab-kr">웨딩 · Wedding</p>
+        <div class="ctab-tags"><span class="ctab-tag">Outdoor Aisle</span><span class="ctab-tag">Floral Arch</span><span class="ctab-tag">Chapel Vows</span></div>
+        <p class="ctab-body">Exchange vows under a blooming floral arch as morning light filters through mountain pines. All the romance of a European garden ceremony — reimagined beneath Korean skies.</p>
+        <a href="#contact" class="ctab-link">Explore this ceremony</a>
+      </div>
+      <div class="ctab reveal r2">
+        <div class="ctab-accent"></div>
+        <svg class="ctab-icon" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10,26 Q18,6 26,26 Q34,46 42,26" stroke="rgba(154,184,154,0.55)" stroke-width="1.5" fill="none"/>
+          <circle cx="26" cy="26" r="20" stroke="rgba(154,184,154,0.3)" stroke-width="0.8" fill="none"/>
+          <rect x="22" y="12" width="8" height="28" fill="rgba(154,184,154,0.15)" stroke="rgba(154,184,154,0.3)" stroke-width="0.5" rx="1"/>
+        </svg>
+        <span class="ctab-num">三</span>
+        <div class="ctab-type">융합 혼례 · Fusion</div>
+        <h3 class="ctab-title">East Meets<br><em>West</em></h3>
+        <p class="ctab-kr">퓨전 혼례 · Fusion Hollye</p>
+        <div class="ctab-tags"><span class="ctab-tag">Dual Ceremony</span><span class="ctab-tag">Hanbok + Gown</span><span class="ctab-tag">Bi-cultural</span></div>
+        <p class="ctab-body">For the couple carrying two worlds in their hearts. Begin with Western vows in a white gown, then change into vivid hanbok for the Paebaek. Two ceremonies, one love story, twice as many golden photographs.</p>
+        <a href="#contact" class="ctab-link">Explore this ceremony</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTL -->
+<section class="intl">
+  <div class="si">
+    <div class="intl-inner">
+      <div class="intl-text">
+        <div class="tag reveal">For International Couples</div>
+        <h2 class="h2 reveal r1">We Speak Your<br><em>Language</em> of Love</h2>
+        <p class="reveal r2">Our bilingual team has guided couples from over 30 countries through every detail — from visa coordination and family etiquette coaching to vow translation and local honeymoon planning.</p>
+        <p class="reveal r2">You focus entirely on the love. We navigate everything else.</p>
+        <div style="margin-top:32px" class="reveal r3"><a href="#contact" class="btn-filled">International Enquiries</a></div>
+      </div>
+      <div class="intl-flags-grid reveal r1">
+        <div class="intl-flag"><span class="intl-flag-emoji">🇰🇷</span><span class="intl-flag-text">Korean · 한국어</span></div>
+        <div class="intl-flag"><span class="intl-flag-emoji">🇺🇸</span><span class="intl-flag-text">English</span></div>
+        <div class="intl-flag"><span class="intl-flag-emoji">🇯🇵</span><span class="intl-flag-text">Japanese · 日本語</span></div>
+        <div class="intl-flag"><span class="intl-flag-emoji">🇨🇳</span><span class="intl-flag-text">Mandarin · 中文</span></div>
+        <div class="intl-flag"><span class="intl-flag-emoji">🇫🇷</span><span class="intl-flag-text">French · Français</span></div>
+        <div class="intl-flag" style="opacity:.6"><span class="intl-flag-emoji">🌏</span><span class="intl-flag-text" style="font-style:italic">+ more on request</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="packages" id="packages">
+  <div class="si">
+    <div class="packages-header">
+      <div class="tag reveal" style="justify-content:center">Packages</div>
+      <h2 class="h2 reveal r1">Crafted for <em>Your Story</em></h2>
+      <p style="font-size:1rem;color:var(--ink-light);max-width:480px;margin:0 auto;line-height:1.85" class="reveal r2">All packages include dedicated coordination and day-of management. Custom quotes available for bespoke requests.</p>
+    </div>
+    <div class="pkg-grid reveal">
+      <div class="pkg">
+        <div class="pkg-tier">Blossom</div>
+        <h3 class="pkg-name">꽃봉오리</h3>
+        <p class="pkg-kr">Kkot Bong-ori · The Bud</p>
+        <p class="pkg-price">From ₩8,500,000 <small>~$6,500 USD · Intimate, up to 50 guests</small></p>
+        <ul class="pkg-list">
+          <li>Half-day venue access (4 hrs)</li>
+          <li>One ceremony style of choice</li>
+          <li>Garden terrace setup</li>
+          <li>Bilingual officiant</li>
+          <li>Bridal suite & prep room</li>
+          <li>Classic floral arrangement</li>
+          <li>Coordination team (day-of)</li>
+        </ul>
+        <div class="pkg-btn-wrap"><a href="#contact" class="pkg-btn-ghost">Enquire Now</a></div>
+      </div>
+      <div class="pkg feat">
+        <div class="pkg-ribbon">Most Loved</div>
+        <div class="pkg-tier">Crane</div>
+        <h3 class="pkg-name">학</h3>
+        <p class="pkg-kr">Hak · The Crane</p>
+        <p class="pkg-price">From ₩18,000,000 <small>~$13,500 USD · Up to 120 guests</small></p>
+        <ul class="pkg-list">
+          <li class="hl">Full-day venue access (10 hrs)</li>
+          <li class="hl">Dual ceremony (Korean + Western)</li>
+          <li class="hl">Hanbok rental — bride & groom</li>
+          <li class="hl">Pyebaek ceremony suite</li>
+          <li>Full floral & décor design</li>
+          <li>Photo coordination (4 hrs)</li>
+          <li>Multi-course reception dinner</li>
+          <li>Mountain portrait session</li>
+          <li>Bilingual coordination full day</li>
+        </ul>
+        <div class="pkg-btn-wrap"><a href="#contact" class="pkg-btn-fill">Enquire Now</a></div>
+      </div>
+      <div class="pkg">
+        <div class="pkg-tier">Phoenix</div>
+        <h3 class="pkg-name">봉황</h3>
+        <p class="pkg-kr">Bonghwang · The Phoenix</p>
+        <p class="pkg-price">From ₩38,000,000 <small>~$28,500 USD · Up to 250 guests</small></p>
+        <ul class="pkg-list">
+          <li>Full weekend venue access</li>
+          <li>Fully bespoke ceremony design</li>
+          <li>VIP hanbok wardrobe styling</li>
+          <li>Live traditional music (nongak)</li>
+          <li>Luxury catering & drinks</li>
+          <li>Photography + videography</li>
+          <li>Guest shuttle coordination</li>
+          <li>Bridal concierge (3 nights)</li>
+          <li>Seoul honeymoon planning</li>
+        </ul>
+        <div class="pkg-btn-wrap"><a href="#contact" class="pkg-btn-ghost">Enquire Now</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="si">
+    <div class="gallery-header">
+      <div>
+        <div class="tag reveal">Gallery</div>
+        <h2 class="h2 reveal r1">Every Frame<br>a <em>Memory</em></h2>
+      </div>
+      <p class="reveal r2">From cherry-blossom arches in spring to crimson foliage in autumn — Kwansei Vista transforms with the seasons, offering endlessly beautiful backdrops for your story.</p>
+    </div>
+    <div class="gallery-mosaic reveal">
+      <div class="gc" style="background:linear-gradient(160deg,#e8f0e0,#d5e5d0);">
+        <div class="gc-inner">
+          <svg viewBox="0 0 320 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;opacity:.85">
+            <rect width="320" height="560" fill="rgba(220,240,220,0.3)"/>
+            <path d="M0,200 L50,150 L110,175 L170,120 L230,155 L280,130 L320,145 L320,250 L0,250 Z" fill="rgba(154,184,154,0.4)"/>
+            <path d="M90,350 Q160,210 230,350" stroke="rgba(120,160,120,0.5)" stroke-width="3.5" fill="none"/>
+            <g fill="rgba(232,180,176,0.7)">
+              <circle cx="92" cy="340" r="12"/><circle cx="105" cy="310" r="10"/><circle cx="125" cy="280" r="11"/>
+              <circle cx="152" cy="262" r="12"/><circle cx="180" cy="268" r="10"/><circle cx="205" cy="285" r="11"/>
+              <circle cx="222" cy="312" r="10"/><circle cx="232" cy="342" r="12"/>
+            </g>
+            <g fill="rgba(245,215,220,0.5)">
+              <circle cx="98" cy="325" r="7"/><circle cx="115" cy="295" r="8"/><circle cx="140" cy="273" r="7"/>
+              <circle cx="168" cy="263" r="8"/><circle cx="196" cy="275" r="7"/><circle cx="216" cy="298" r="8"/>
+            </g>
+            <g fill="rgba(154,184,154,0.5)">
+              <circle cx="108" cy="298" r="5"/><circle cx="130" cy="275" r="4"/>
+              <circle cx="162" cy="266" r="5"/><circle cx="190" cy="272" r="4"/><circle cx="214" cy="292" r="5"/>
+            </g>
+            <rect x="140" y="330" width="40" height="230" fill="rgba(245,239,230,0.4)"/>
+            <ellipse cx="148" cy="490" rx="10" ry="26" fill="rgba(155,191,204,0.5)"/>
+            <circle cx="148" cy="461" r="8" fill="rgba(155,191,204,0.5)"/>
+            <ellipse cx="168" cy="488" rx="12" ry="28" fill="rgba(232,180,176,0.5)"/>
+            <circle cx="168" cy="457" r="8" fill="rgba(232,180,176,0.5)"/>
+            <g fill="rgba(232,180,176,0.4)"><circle cx="55" cy="420" r="18"/><circle cx="40" cy="445" r="14"/><circle cx="75" cy="435" r="12"/></g>
+            <g fill="rgba(154,184,154,0.5)"><circle cx="60" cy="455" r="10"/><circle cx="80" cy="415" r="8"/></g>
+            <g fill="rgba(232,180,176,0.4)"><circle cx="265" cy="420" r="18"/><circle cx="280" cy="445" r="14"/><circle cx="245" cy="435" r="12"/></g>
+            <g fill="rgba(100,140,100,0.3)"><polygon points="20,350 35,300 50,350"/><polygon points="280,355 297,302 314,355"/></g>
+          </svg>
+        </div>
+        <div class="gc-lbl">Garden Ceremony Terrace</div>
+      </div>
+      <div class="gc" style="background:linear-gradient(160deg,#f5e0e0,#f0d5d0);">
+        <div class="gc-inner">
+          <svg viewBox="0 0 220 280" xmlns="http://www.w3.org/2000/svg" style="width:92%">
+            <rect width="220" height="280" fill="rgba(245,225,220,0.3)"/>
+            <circle cx="75" cy="52" r="22" fill="rgba(196,160,106,0.3)" stroke="rgba(196,160,106,0.5)" stroke-width="0.8"/>
+            <path d="M42,78 Q75,70 108,78 L122,240 L28,240 Z" fill="rgba(232,180,176,0.6)" stroke="rgba(212,129,122,0.3)" stroke-width="0.5"/>
+            <path d="M42,78 Q75,68 108,78 L103,106 Q75,112 47,106 Z" fill="rgba(154,184,154,0.65)" stroke="rgba(130,160,130,0.4)" stroke-width="0.5"/>
+            <path d="M60,82 Q75,79 90,82" stroke="rgba(245,239,230,0.8)" stroke-width="1.5" fill="none"/>
+            <line x1="90" y1="88" x2="94" y2="110" stroke="rgba(196,160,106,0.6)" stroke-width="0.8"/>
+            <ellipse cx="94" cy="114" rx="4" ry="6" fill="rgba(232,180,176,0.6)"/>
+            <circle cx="148" cy="52" r="22" fill="rgba(196,160,106,0.3)" stroke="rgba(196,160,106,0.5)" stroke-width="0.8"/>
+            <path d="M118,80 Q148,69 178,80 L182,230 L155,230 L148,165 L141,230 L114,230 Z" fill="rgba(155,191,204,0.55)"/>
+            <path d="M118,80 Q148,69 178,80 L173,110 Q148,115 123,110 Z" fill="rgba(154,184,154,0.65)"/>
+            <path d="M130,84 Q148,81 166,84" stroke="rgba(245,239,230,0.8)" stroke-width="1.5" fill="none"/>
+            <g opacity="0.6">
+              <rect x="72" y="96" width="6" height="6" fill="rgba(232,180,176,0.9)" rx="0.5"/>
+              <rect x="78" y="96" width="6" height="6" fill="rgba(155,191,204,0.9)" rx="0.5"/>
+              <rect x="144" y="96" width="6" height="6" fill="rgba(232,180,176,0.9)" rx="0.5"/>
+              <rect x="150" y="96" width="6" height="6" fill="rgba(155,191,204,0.9)" rx="0.5"/>
+            </g>
+          </svg>
+        </div>
+        <div class="gc-lbl">Hanbok Ceremony</div>
+      </div>
+      <div class="gc" style="background:linear-gradient(160deg,#daedf5,#c5e0ec);">
+        <div class="gc-inner">
+          <svg viewBox="0 0 220 280" xmlns="http://www.w3.org/2000/svg" style="width:92%">
+            <rect width="220" height="280" fill="rgba(200,230,245,0.5)"/>
+            <path d="M0,180 L40,120 L80,150 L120,85 L165,125 L210,95 L220,110 L220,220 L0,220 Z" fill="rgba(154,184,154,0.55)"/>
+            <path d="M0,210 L60,160 L100,185 L150,148 L200,175 L220,165 L220,280 L0,280 Z" fill="rgba(130,165,130,0.65)"/>
+            <path d="M0,175 Q55,165 110,172 Q165,165 220,172 L220,188 Q165,180 110,187 Q55,180 0,188 Z" fill="rgba(220,235,240,0.5)"/>
+            <g fill="rgba(80,120,80,0.35)">
+              <polygon points="15,220 28,180 41,220"/><polygon points="28,220 43,175 58,220"/>
+              <polygon points="172,220 185,175 198,220"/><polygon points="185,220 200,182 215,220"/>
+            </g>
+            <circle cx="170" cy="50" r="28" fill="rgba(245,230,200,0.4)"/>
+            <circle cx="170" cy="50" r="20" fill="rgba(245,235,210,0.5)"/>
+            <g stroke="rgba(100,140,120,0.4)" stroke-width="0.8" fill="none">
+              <path d="M75,60 Q80,55 85,60 Q90,55 95,60"/>
+              <path d="M50,45 Q54,41 58,45 Q62,41 66,45"/>
+            </g>
+          </svg>
+        </div>
+        <div class="gc-lbl">Mountain Vista</div>
+      </div>
+      <div class="gc" style="background:linear-gradient(160deg,#f0e8d8,#ede0cc);">
+        <div class="gc-inner">
+          <svg viewBox="0 0 220 280" xmlns="http://www.w3.org/2000/svg" style="width:92%">
+            <rect width="220" height="280" fill="rgba(245,235,218,0.5)"/>
+            <rect x="20" y="40" width="180" height="110" fill="rgba(245,235,215,0.8)" stroke="rgba(196,160,106,0.35)" stroke-width="0.8" rx="1"/>
+            <g stroke="rgba(232,180,176,0.45)" stroke-width="0.8" fill="none">
+              <rect x="28" y="48" width="164" height="94" rx="2"/>
+              <path d="M50,48 L50,142 M80,48 L80,142 M110,48 L110,142 M140,48 L140,142 M170,48 L170,142"/>
+              <path d="M28,68 L192,68 M28,90 L192,90 M28,112 L192,112 M28,130 L192,130"/>
+            </g>
+            <g opacity="0.35">
+              <rect x="30" y="50" width="18" height="18" fill="rgba(232,180,176,0.9)" rx="0.5"/>
+              <rect x="52" y="50" width="18" height="18" fill="rgba(154,184,154,0.9)" rx="0.5"/>
+              <rect x="82" y="50" width="18" height="18" fill="rgba(155,191,204,0.9)" rx="0.5"/>
+              <rect x="112" y="50" width="18" height="18" fill="rgba(200,168,184,0.9)" rx="0.5"/>
+              <rect x="142" y="50" width="18" height="18" fill="rgba(232,180,176,0.9)" rx="0.5"/>
+              <rect x="30" y="70" width="18" height="18" fill="rgba(155,191,204,0.9)" rx="0.5"/>
+              <rect x="52" y="70" width="18" height="18" fill="rgba(232,180,176,0.9)" rx="0.5"/>
+            </g>
+            <rect x="35" y="160" width="150" height="8" fill="rgba(196,160,106,0.4)" rx="1"/>
+            <rect x="48" y="168" width="8" height="70" fill="rgba(196,160,106,0.25)" rx="1"/>
+            <rect x="164" y="168" width="8" height="70" fill="rgba(196,160,106,0.25)" rx="1"/>
+            <ellipse cx="80" cy="157" rx="16" ry="8" fill="rgba(232,180,176,0.4)"/>
+            <ellipse cx="110" cy="154" rx="20" ry="10" fill="rgba(245,215,190,0.5)"/>
+            <ellipse cx="145" cy="157" rx="16" ry="8" fill="rgba(154,184,154,0.4)"/>
+            <rect x="22" y="135" width="3" height="25" fill="rgba(245,230,200,0.8)" rx="1"/>
+            <ellipse cx="23.5" cy="132" rx="4" ry="6" fill="rgba(255,200,100,0.25)"/>
+            <rect x="195" y="135" width="3" height="25" fill="rgba(245,230,200,0.8)" rx="1"/>
+            <ellipse cx="196.5" cy="132" rx="4" ry="6" fill="rgba(255,200,100,0.25)"/>
+          </svg>
+        </div>
+        <div class="gc-lbl">Pyebaek Suite</div>
+      </div>
+      <div class="gc" style="background:linear-gradient(160deg,#eae5f5,#ddd8f0);">
+        <div class="gc-inner">
+          <svg viewBox="0 0 220 280" xmlns="http://www.w3.org/2000/svg" style="width:92%">
+            <rect width="220" height="280" fill="rgba(235,230,248,0.5)"/>
+            <line x1="110" y1="0" x2="110" y2="38" stroke="rgba(196,160,106,0.4)" stroke-width="0.8"/>
+            <circle cx="110" cy="42" r="18" fill="none" stroke="rgba(196,160,106,0.3)" stroke-width="0.8"/>
+            <g fill="rgba(255,230,150,0.4)">
+              <circle cx="96" cy="44" r="3"/><circle cx="110" cy="40" r="3"/>
+              <circle cx="124" cy="44" r="3"/><circle cx="92" cy="54" r="2.5"/><circle cx="128" cy="54" r="2.5"/>
+            </g>
+            <ellipse cx="65" cy="190" rx="38" ry="20" fill="rgba(245,235,215,0.7)" stroke="rgba(196,160,106,0.25)" stroke-width="0.8"/>
+            <ellipse cx="155" cy="190" rx="38" ry="20" fill="rgba(245,235,215,0.7)" stroke="rgba(196,160,106,0.25)" stroke-width="0.8"/>
+            <ellipse cx="110" cy="215" rx="45" ry="23" fill="rgba(245,230,215,0.8)" stroke="rgba(232,180,176,0.4)" stroke-width="0.8"/>
+            <g fill="rgba(232,180,176,0.55)"><circle cx="58" cy="176" r="10"/><circle cx="72" cy="173" r="8"/><circle cx="65" cy="168" r="9"/></g>
+            <g fill="rgba(154,184,154,0.55)"><circle cx="110" cy="200" r="12"/><circle cx="98" cy="205" r="8"/><circle cx="122" cy="205" r="8"/></g>
+            <g fill="rgba(155,191,204,0.55)"><circle cx="148" cy="176" r="10"/><circle cx="162" cy="173" r="8"/><circle cx="155" cy="168" r="9"/></g>
+          </svg>
+        </div>
+        <div class="gc-lbl">Reception Pavilion</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi">
+  <div class="si">
+    <div class="testi-header">
+      <div class="tag reveal" style="justify-content:center">Stories</div>
+      <h2 class="h2 reveal r1">Told by <em>Those</em> Who've Been Here</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="tcard reveal">
+        <div class="tcard-quote">"</div>
+        <div class="tcard-stars">★★★★★</div>
+        <p class="tcard-text">We flew from Boston for our ceremony and couldn't have imagined anything more beautiful. The way they wove our American traditions with Korean rites felt completely natural — like we'd always belonged here.</p>
+        <div class="tcard-hr"></div>
+        <div class="tcard-author">Emily & Junho Kim</div>
+        <div class="tcard-from">Boston, USA × Seoul · Fusion Ceremony 2024</div>
+      </div>
+      <div class="tcard reveal r1">
+        <div class="tcard-quote">"</div>
+        <div class="tcard-stars">★★★★★</div>
+        <p class="tcard-text">산이 정말로 증인이 되어주었어요. 북한산의 새벽 빛 속에서 평생 잊지 못할 혼례를 올렸습니다. 관세이 비스타, 진심으로 감사합니다.</p>
+        <div class="tcard-hr"></div>
+        <div class="tcard-author">지수 & 민준</div>
+        <div class="tcard-from">Seoul, Korea · Traditional Ceremony 2024</div>
+      </div>
+      <div class="tcard reveal r2">
+        <div class="tcard-quote">"</div>
+        <div class="tcard-stars">★★★★★</div>
+        <p class="tcard-text">As a French-Korean couple, we were nervous about finding a venue that truly honored both cultures. Kwansei Vista not only made us feel seen — they made our families feel genuinely welcomed too.</p>
+        <div class="tcard-hr"></div>
+        <div class="tcard-author">Céline Moreau & Taehyun Park</div>
+        <div class="tcard-from">Paris, France × Busan, Korea · Fusion 2023</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section class="location">
+  <div class="si">
+    <div class="location-grid">
+      <div class="location-text">
+        <div class="tag reveal">Location</div>
+        <h2 class="h2 reveal r1">At the Edge of<br>the <em>Mountain</em></h2>
+        <p class="reveal r2">Perched at the southern foothills of Bukhansan National Park, Kwansei Vista offers Seoul's most beautiful natural backdrop — yet stays just 45 minutes from Incheon Airport.</p>
+        <div class="reveal r2">
+          <div class="loc-row"><div class="loc-icon">🏔</div><div><div class="loc-label">Address</div><div class="loc-val">Bukhansan-ro, Eunpyeong-gu<br>Seoul, South Korea 03365</div></div></div>
+          <div class="loc-row"><div class="loc-icon">✈️</div><div><div class="loc-label">From Incheon Airport</div><div class="loc-val">~45 min by private transfer · Shuttle coordination included in packages</div></div></div>
+          <div class="loc-row"><div class="loc-icon">🚇</div><div><div class="loc-label">From City Center</div><div class="loc-val">Line 3 · Gupabal Station · ~15 min scenic walk</div></div></div>
+          <div class="loc-row"><div class="loc-icon">🌸</div><div><div class="loc-label">Best Seasons</div><div class="loc-val">Cherry blossom (Apr–May) · Autumn foliage (Oct–Nov)</div></div></div>
+        </div>
+      </div>
+      <div class="location-map reveal r1">
+        <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+          <rect width="500" height="400" fill="#f0ebe0"/>
+          <rect width="500" height="400" fill="rgba(154,184,154,0.08)"/>
+          <g stroke="rgba(196,160,106,0.2)" stroke-width="1" fill="none">
+            <path d="M60,360 Q110,290 170,255 Q230,220 265,165 Q300,108 355,88 Q410,68 455,58"/>
+            <path d="M42,370 Q98,302 158,262 Q220,228 258,174 Q296,118 350,100 Q408,80 452,70"/>
+            <path d="M28,378 Q88,314 148,268 Q212,235 253,181 Q292,126 346,112 Q406,92 450,80"/>
+            <ellipse cx="285" cy="155" rx="85" ry="55"/>
+            <ellipse cx="285" cy="155" rx="60" ry="38"/>
+            <ellipse cx="285" cy="155" rx="38" ry="24"/>
+            <ellipse cx="285" cy="155" rx="18" ry="10"/>
+          </g>
+          <path d="M175,320 Q215,278 258,242 Q308,200 340,168 Q365,140 372,110 L420,130 L400,200 L380,260 L340,310 L280,350 L210,370 Z" fill="rgba(154,184,154,0.12)"/>
+          <path d="M0,310 Q100,288 200,268 Q280,248 355,206" stroke="rgba(196,160,106,0.35)" stroke-width="2" fill="none" stroke-dasharray="5,4"/>
+          <path d="M500,355 Q400,325 295,297 Q248,283 218,256" stroke="rgba(196,160,106,0.25)" stroke-width="1.2" fill="none" stroke-dasharray="3,3"/>
+          <path d="M168,322 Q208,280 252,242 Q304,200 334,170 Q362,142 368,112" stroke="rgba(154,184,154,0.55)" stroke-width="1.8" fill="none" stroke-dasharray="7,4"/>
+          <text x="318" y="138" fill="rgba(111,152,112,0.7)" font-family="Jost, sans-serif" font-size="7.5" letter-spacing="1.5">BUKHANSAN</text>
+          <text x="316" y="148" fill="rgba(111,152,112,0.5)" font-family="Jost, sans-serif" font-size="6.5" letter-spacing="1">NATIONAL PARK</text>
+          <circle cx="250" cy="248" r="12" fill="rgba(212,129,122,0.25)"/>
+          <circle cx="250" cy="248" r="8" fill="rgba(212,129,122,0.5)" stroke="rgba(212,129,122,0.7)" stroke-width="1.2"/>
+          <circle cx="250" cy="248" r="3.5" fill="#d4817a"/>
+          <line x1="250" y1="256" x2="250" y2="284" stroke="rgba(212,129,122,0.5)" stroke-width="1" stroke-dasharray="2,2"/>
+          <rect x="182" y="284" width="136" height="34" fill="rgba(250,246,240,0.92)" stroke="rgba(196,160,106,0.4)" stroke-width="0.8" rx="3"/>
+          <text x="250" y="299" fill="#d4817a" font-family="Jost, sans-serif" font-size="8.5" text-anchor="middle" letter-spacing="1.5" font-weight="500">KWANSEI VISTA</text>
+          <text x="250" y="311" fill="rgba(110,95,84,0.55)" font-family="Jost, sans-serif" font-size="7" text-anchor="middle" letter-spacing="0.8">관세이 비스타</text>
+          <g transform="translate(462,32)">
+            <circle cx="0" cy="0" r="15" fill="rgba(245,235,215,0.8)" stroke="rgba(196,160,106,0.3)" stroke-width="0.8"/>
+            <polygon points="0,-9 3.5,4 0,1.5 -3.5,4" fill="rgba(212,129,122,0.6)"/>
+            <text y="22" fill="rgba(110,95,84,0.5)" font-family="Jost, sans-serif" font-size="7" text-anchor="middle" x="0" letter-spacing="1">N</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="si">
+    <div class="cta-inner">
+      <div class="tag reveal" style="justify-content:center">Begin Your Journey</div>
+      <h2 class="reveal r1">Your <em>Story</em><br>Starts Here</h2>
+      <p class="reveal r2">Whether you're planning from Seoul or from across the world, our team is ready to walk with you through every detail — from your first enquiry to your final dance under mountain skies.</p>
+      <div class="cta-actions reveal r2">
+        <a href="mailto:weddings@kwanseivista.com" class="btn-filled">Send an Enquiry</a>
+        <a href="tel:+82-2-0000-0000" class="btn-outline">Call Our Team</a>
+      </div>
+      <div class="cta-contact-row reveal r3">
+        <div class="cta-contact-item"><div class="cta-contact-lbl">Email</div><div class="cta-contact-val">weddings@kwanseivista.com</div></div>
+        <div class="cta-contact-item"><div class="cta-contact-lbl">Phone</div><div class="cta-contact-val">+82 (2) 000-0000</div></div>
+        <div class="cta-contact-item"><div class="cta-contact-lbl">Instagram</div><div class="cta-contact-val">@kwanseivista</div></div>
+        <div class="cta-contact-item"><div class="cta-contact-lbl">KakaoTalk</div><div class="cta-contact-val">kwanseivista</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Kwansei Vista</div>
+      <div class="footer-brand-kr">관세이 비스타 · 북한산 국립공원</div>
+      <p class="footer-about">A garden wedding sanctuary where Korean heritage blooms at the edge of Bukhansan National Park, Seoul.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Ceremonies</div>
+      <ul class="footer-links">
+        <li><a href="#ceremonies">Traditional Korean</a></li>
+        <li><a href="#ceremonies">Western Garden</a></li>
+        <li><a href="#ceremonies">East Meets West</a></li>
+        <li><a href="#packages">View Packages</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">The Venue</div>
+      <ul class="footer-links">
+        <li><a href="#about">About Kwansei Vista</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#">Getting Here</a></li>
+        <li><a href="#">Accommodation</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Support</div>
+      <ul class="footer-links">
+        <li><a href="#contact">Contact Us</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">International Couples</a></li>
+        <li><a href="#">Press & Media</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Kwansei Vista · All Rights Reserved · Bukhansan, Seoul, Korea</div>
+    <div class="footer-langs">
+      <a href="#" class="footer-lang on">EN</a>
+      <a href="#" class="footer-lang">한국어</a>
+      <a href="#" class="footer-lang">日本語</a>
+      <a href="#" class="footer-lang">中文</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+(function ar(){ rx+=(mx-rx)*.14; ry+=(my-ry)*.14; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(ar); })();
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>50));
+const revs=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('vis');}),{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+revs.forEach(el=>obs.observe(el));
+// Petals
+const pc=document.getElementById('petals');
+const cols=['rgba(232,180,176,0.55)','rgba(245,215,220,0.5)','rgba(154,184,154,0.35)','rgba(200,168,184,0.4)','rgba(232,200,180,0.4)'];
+for(let i=0;i<20;i++){const p=document.createElement('div');p.className='petal';p.style.cssText=`left:${Math.random()*100}%;width:${6+Math.random()*8}px;height:${7+Math.random()*10}px;background:${cols[i%cols.length]};border-radius:${Math.random()>.5?'50% 0 50% 0':'0 50% 0 50%'};animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*10}s;`;pc.appendChild(p);}
+// Parallax mountains
+window.addEventListener('scroll',()=>{const m=document.querySelector('.hero-mountains');if(m&&scrollY<innerHeight)m.style.transform=`translateY(${scrollY*.25}px)`;});
+</script>
+</body>
+</html>
